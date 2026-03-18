@@ -6,7 +6,7 @@ Ce projet se décompose en **deux parties indépendantes** :
 1. **Liaison + visualisation** — relie les trajectoires et produit une vidéo animée (`link_trajectories.py` + `visualize_trajectories.py`)
 2. **Comparaison d'algorithmes** — benchmark de trois stratégies d'affectation avec analyse de complexité (`compare_algorithms.py`)
 
----
+
 
 ## Table des matières
 
@@ -24,7 +24,7 @@ Ce projet se décompose en **deux parties indépendantes** :
 - [Points forts et limites de chaque algorithme](#points-forts-et-limites-de-chaque-algorithme)
 - [Résultats sur le dataset fourni](#résultats-sur-le-dataset-fourni)
 
----
+
 
 ## Installation
 
@@ -47,7 +47,7 @@ scipy>=1.11
 opencv-python>=4.8
 ```
 
----
+
 
 ## Démarrage rapide
 
@@ -77,7 +77,7 @@ python visualize_trajectories_compare.py \
   --algo bipartite
 ```
 
----
+
 
 ## Structure du projet
 
@@ -96,7 +96,7 @@ python visualize_trajectories_compare.py \
 └── README.md
 ```
 
----
+
 
 ## Format des données
 
@@ -115,7 +115,7 @@ python visualize_trajectories_compare.py \
 
 Les points sont stockés comme une liste plate de flottants : `[x0, y0, x1, y1, …]`.
 
----
+
 
 ## Partie 1 — Liaison et visualisation
 
@@ -137,7 +137,7 @@ score = w_dist × (dist / MAX_DIST) + w_time × (gap / MAX_GAP)
 
 L'affectation est réalisée par l'**algorithme Hongrois** (`scipy.optimize.linear_sum_assignment`), qui garantit l'optimum global en minimisant le coût total de l'ensemble des liaisons simultanément. Les paires liées sont ensuite enchaînées en séquences : `traj_003 → traj_004 → traj_005 → …`
 
----
+
 
 ### 1. `link_trajectories.py`
 
@@ -200,7 +200,7 @@ links  = build_links_hungarian(data["trajectories"])
 chains = build_chains(data["trajectories"], links)
 ```
 
----
+
 
 ### 2. `visualize_trajectories.py`
 
@@ -245,7 +245,7 @@ python visualize_trajectories.py \
 
 > **Note :** la durée de rendu est d'environ 30 secondes pour ce dataset à 30 fps et 1280×720.
 
----
+
 
 ## Partie 2 — Comparaison des algorithmes
 
@@ -311,7 +311,7 @@ python compare_algorithms.py --input trajectories_dataset.json --ghost 2.0
 python compare_algorithms.py --input trajectories_dataset.json --ghost 0.1
 ```
 
----
+
 
 ### 4. `visualize_trajectories_compare.py`
 
@@ -354,7 +354,7 @@ python visualize_trajectories_compare.py \
 | `--width` | int | 1280 | Largeur en pixels |
 | `--height` | int | 720 | Hauteur en pixels |
 
----
+
 
 ## Analyse : pourquoi le glouton suffit ici
 
@@ -366,7 +366,7 @@ Ici, sur une matrice 56×56 = 3 136 paires possibles, **seulement 21 sont valide
 
 En pratique, l'Hongrois devient indispensable dès que les trajectoires sont plus nombreuses, plus rapprochées dans l'espace, ou que les seuils sont plus larges — situations dans lesquelles plusieurs paires valides entrent en compétition pour la même cible.
 
----
+
 
 ## Points forts et limites de chaque algorithme
 
@@ -383,7 +383,7 @@ Trie toutes les paires valides par score croissant et les affecte dans l'ordre, 
 - Ne garantit pas l'optimum global : si deux sources veulent la même cible, il prend la moins coûteuse sans vérifier si cela bloque une meilleure liaison en aval
 - Fragile sur les datasets denses où les conflits sont fréquents
 
----
+
 
 ### 2. Algorithme Hongrois (Munkres) — O(n³)
 
@@ -399,7 +399,7 @@ Résout le problème d'affectation linéaire en minimisant le coût total de tou
 - Force une affectation 1-à-1 complète : toutes les trajectoires doivent être assignées, même si aucune liaison pertinente n'existe — il faut filtrer les liaisons à coût infini en post-traitement
 - Ne modélise pas explicitement la possibilité qu'un objet disparaisse (pas de coût de rejet natif)
 
----
+
 
 ### 3. Graphe biparti + nœuds fantômes — O(n³)
 
@@ -415,7 +415,7 @@ Variante inspirée des trackers temps réel SORT et ByteTrack. On augmente la ma
 - Sur ce dataset, il rejette 7 liaisons valides car leur coût dépasse 0.5 — comportement souhaité ou non selon le contexte
 - Complexité O((2n)³) : constante 8× plus grande que l'Hongrois, même classe asymptotique
 
----
+
 
 ## Résultats sur le dataset fourni
 
