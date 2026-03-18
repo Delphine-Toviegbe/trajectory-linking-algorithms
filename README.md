@@ -32,7 +32,7 @@ Ce projet se décompose en **deux parties indépendantes** :
 
 ```bash
 # Cloner le dépôt
-git clone https://github.com/<votre-utilisateur>/trajectory-linking-algorithms.git
+git clone https://github.com/Delphine-Toviegbe/trajectory-linking-algorithms.git
 cd trajectory-linking-algorithms
 
 # Installer les dépendances
